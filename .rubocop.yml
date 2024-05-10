@@ -1,0 +1,15 @@
+require: rubocop-rails
+
+# .rubocop.yml
+
+# Exclude specific files or directories from RuboCop checks
+AllCops:
+  Exclude:
+    - 'vendor/**/*'          # Exclude files in the 'vendor' directory
+    - 'config/**/*'          # Exclude files in the 'config' directory
+    - 'db/schema.rb'         # Exclude the 'schema.rb' file
+    - 'spec/**/*'         # Exclude the 'schema.rb' file
+    - 'test/**/*'         # Exclude the 'schema.rb' file
+    - 'Gemfile'              # Exclude the 'Gemfile' file
+    - 'Rakefile'             # Exclude the 'Rakefile' file
+    - 'README.md'            # Exclude the 'README.md' file
