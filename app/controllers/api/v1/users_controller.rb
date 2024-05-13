@@ -26,7 +26,7 @@ module Api
       end
 
       def update
-        if @user.update(user_params)
+        if @user.update(user_params.except(:password))
           render json: @user, status: :ok
         else
           render json: @user.errors, status: :unprocessable_entity
@@ -48,7 +48,7 @@ module Api
       end
 
       def user_params
-        params.require(:user).permit(:first_name, :last_name, :email, :phone_number)
+        params.require(:user).permit(:first_name, :last_name, :email, :phone_number, :password,:password_confirmation)
       end
     end
   end

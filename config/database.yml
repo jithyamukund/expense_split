@@ -20,6 +20,8 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: postgres
+  password: root
 
 development:
   <<: *default
@@ -30,8 +32,7 @@ development:
   # When left blank, postgres will use the default role. This is
   # the same name as the operating system user that initialized the database.
   #username: expense_split_api
-  username: postgres
-  password: <%= ENV['EXPENSE_SPLIT_API_DATABASE_PASSWORD'] %>
+
   # The password associated with the postgres role (username).
 
   # Connect on a TCP socket. Omitted by default since the client uses a
@@ -58,8 +59,6 @@ development:
 test:
   <<: *default
   database: expense_split_api_test
-  username: postgres
-  password: <%= ENV['EXPENSE_SPLIT_API_DATABASE_PASSWORD'] %>
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
@@ -82,5 +81,3 @@ test:
 production:
   <<: *default
   database: expense_split_api_production
-  username: postgres
-  password: <%= ENV['EXPENSE_SPLIT_API_DATABASE_PASSWORD'] %>

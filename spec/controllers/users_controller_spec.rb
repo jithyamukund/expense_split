@@ -46,7 +46,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
           first_name: 'John',
           last_name: 'Doe',
           email: 'johndoe.gmail.com',
-          phone_number: '9999999991'
+          phone_number: '9999999991',
+          password: 'pass123'
         }
       end
 
