@@ -6,5 +6,6 @@ FactoryBot.define do
     last_name { Faker::Name.last_name }
     email { Faker::Internet.email }
     phone_number { Faker::Base.regexify(/[0-9]{10}/) }
+    password { Faker::Internet.password(6, 20) }
   end
 end
