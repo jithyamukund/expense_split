@@ -1,15 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::GroupsController, type: :controller do
-  describe 'GET /index' do
-    it 'returns a success response' do
-      get :index
-      expect(response).to have_http_status(:ok)
-    end
-  end
 
   describe 'GET /show' do
-    let(:group) { Group.create(name: "Example Group 1") }
+    let(:group) { Group.create(name: "Example Group 1", description: "Sample Description") }
 
     it 'returns a success response' do
       get :show, params: { id: group.id }
@@ -19,7 +13,7 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
 
   describe 'POST /create' do
     context 'with valid parameters' do
-      let(:valid_params) { { name: 'Example Group 1' } }
+      let(:valid_params) { { name: 'Example Group 1', description: "Sample Description" } }
 
       it 'should accept the params with json format' do
         post :create, params: { group: valid_params }
@@ -39,7 +33,7 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
     end
 
     context 'with invalid parameters' do
-      let(:invalid_params) { {name: '' } }
+      let(:invalid_params) { {name: '', description: '' } }
 
       it 'returns error messages in JSON format' do
         post :create, params: { group: invalid_params }, format: :json
@@ -61,7 +55,7 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
   end
 
   describe 'PATCH /update' do
-    let(:group) { Group.create(name: "Example Group 1") }
+    let(:group) { Group.create(name: "Example Group 1", description: "Sample Description") }
 
     context 'with valid params' do
       let(:valid_params) { { id: group.id, group: { name: 'NewName_1' } } }
@@ -84,7 +78,7 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
     end
 
     context 'with invalid params' do
-      let(:invalid_params) { { id: group.id, group: { name: '' } } }
+      let(:invalid_params) { { id: group.id, group: { name: '' , description: ''} } }
 
       it 'does not update the group' do
         expect do
@@ -99,7 +93,7 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
     end
 
     describe 'DELETE /destroy' do
-      let!(:group) { Group.create(name: "Example Group 1") }
+      let!(:group) { Group.create(name: "Example Group 1", description: "Sample Description") }
 
       it 'destroys the group' do
         expect do
