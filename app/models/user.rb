@@ -31,9 +31,10 @@ class User < ApplicationRecord
               with: URI::MailTo::EMAIL_REGEXP,
               message: 'is invalid'
             }
-  # validates :password,
-  #           presence: { message: 'can not be blank' },
-  #           length: { minimum: 6, maximum: 15   }
+  validates :password,
+            presence: true,
+            length: { minimum: 6, maximum: 20 },
+            on: :create
 
   before_save do
     self.email = email.downcase.strip if email.present?
