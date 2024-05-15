@@ -106,5 +106,72 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
         expect(response).to have_http_status(:ok)
       end
     end
+
+    describe 'POST /add_members' do
+      let(:group) { Group.create(name: "Example Group 1", description: "Sample Description") }
+      let(:user) { create(:user) }
+
+      context 'when group and user exist' do
+        before do
+          post :add_members, params: { id: group.id, user_id: user.id }
+        end
+
+        it 'adds the user to the group' do
+          expect(group.users).to include(user)
+        end
+
+        it 'returns a successful response with the updated group users' do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'when group or user does not exist' do
+        before do
+          post :add_members, params: { id: 999, user_id: user.id }
+        end
+
+        it 'returns a not found response' do
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'returns an error message' do
+          expect(JSON.parse(response.body)['error']).to eq('Group not found')
+        end
+      end
+    end
+
+    describe 'POST /remove_members' do
+      let(:group) { Group.create(name: "Example Group 1", description: "Sample Description") }
+      let(:user) { create(:user) }
+
+      context 'when group and user exist' do
+        before do
+          GroupUser.create(user: user, group: group)
+          post :remove_members, params: { id: group.id, user_id: user.id }
+        end
+
+        it 'removes the user from the group' do
+          expect(group.users).not_to include(user)
+        end
+
+        it 'returns a successful response with the updated group users' do
+          expect(response).to have_http_status(:ok)
+        end
+      end
+
+      context 'when group or user does not exist' do
+        before do
+          post :remove_members, params: { id: 999, user_id: user.id }
+        end
+
+        it 'returns a not found response' do
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'returns an error message' do
+          expect(JSON.parse(response.body)['error']).to eq('Group not found')
+        end
+      end
+    end
   end
 end
