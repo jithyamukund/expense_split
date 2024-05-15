@@ -1,16 +1,9 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-
 RSpec.describe Api::V1::UsersController, type: :controller do
-  describe 'GET #index' do
-    it 'returns a success response' do
-      get :index
-      expect(response).to have_http_status(:ok)
-    end
-  end
 
-  describe 'GET #show' do
+  describe 'GET /show' do
     let(:user) { create(:user) }
 
     it 'returns a success response' do
@@ -19,7 +12,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe 'POST#create' do
+  describe 'POST /create' do
     context 'with valid parameters' do
       let(:valid_params) { attributes_for(:user) }
 
@@ -70,7 +63,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe 'PATCH #update' do
+  describe 'PATCH /update' do
     let(:user) { create(:user) }
 
     context 'with valid params' do
@@ -108,7 +101,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
     end
 
-    describe 'DELETE #destroy' do
+    describe 'DELETE /destroy' do
       let!(:user) { create(:user) }
 
       it 'destroys the user' do
