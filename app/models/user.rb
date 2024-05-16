@@ -3,6 +3,9 @@
 # Represents a user in the application.
 class User < ApplicationRecord
   has_secure_password
+  has_many :group_users, dependent: :destroy
+  has_many :groups, through: :group_users
+
   validates :first_name,
             presence: true,
             length: { minimum: 3, maximum: 25 },

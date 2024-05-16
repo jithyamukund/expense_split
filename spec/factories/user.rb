@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :user do
     first_name { Faker::Name.first_name }
-    last_name { Faker::Name.last_name }
+    last_name { Faker::Name.last_name.gsub(/[^a-zA-Z]/, '') }
     email { Faker::Internet.email }
     phone_number { Faker::Base.regexify(/[0-9]{10}/) }
     password { Faker::Internet.password(6, 20) }
