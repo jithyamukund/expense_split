@@ -125,9 +125,9 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
         end
       end
 
-      context 'when group or user does not exist' do
+      context 'when Group does not exist' do
         before do
-          post :add_members, params: { id: 999, user_id: user.id }
+          post :add_members, params: { id: "invalid", user_id: user.id }
         end
 
         it 'returns a not found response' do
@@ -136,6 +136,20 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
 
         it 'returns an error message' do
           expect(JSON.parse(response.body)['error']).to eq('Group not found')
+        end
+      end
+
+      context 'when User does not exist' do
+        before do
+          post :add_members, params: { id: group.id, user_id: 'invalid' }
+        end
+
+        it 'returns a not found response' do
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'returns an error message' do
+          expect(JSON.parse(response.body)['error']).to eq('User not found')
         end
       end
     end
@@ -159,9 +173,9 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
         end
       end
 
-      context 'when group or user does not exist' do
+      context 'When Group does not exist' do
         before do
-          post :remove_members, params: { id: 999, user_id: user.id }
+          post :remove_members, params: { id: 'invalid', user_id: user.id }
         end
 
         it 'returns a not found response' do
@@ -170,6 +184,20 @@ RSpec.describe Api::V1::GroupsController, type: :controller do
 
         it 'returns an error message' do
           expect(JSON.parse(response.body)['error']).to eq('Group not found')
+        end
+      end
+
+      context 'When User does not exist' do
+        before do
+          post :remove_members, params: { id: group.id, user_id: 'invalid' }
+        end
+
+        it 'returns a not found response' do
+          expect(response).to have_http_status(:not_found)
+        end
+
+        it 'returns an error message' do
+          expect(JSON.parse(response.body)['error']).to eq('User not found')
         end
       end
     end
