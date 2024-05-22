@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_19_110010) do
+ActiveRecord::Schema.define(version: 2024_05_19_131443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "expense_payers", force: :cascade do |t|
+    t.bigint "expense_id"
+    t.float "amount"
+    t.integer "paid_by"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expense_id"], name: "index_expense_payers_on_expense_id"
+  end
+
+  create_table "expenses", force: :cascade do |t|
+    t.bigint "group_id"
+    t.text "description"
+    t.float "total_amount"
+    t.integer "split_type_id"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_expenses_on_group_id"
+  end
 
   create_table "group_users", force: :cascade do |t|
     t.bigint "user_id"
@@ -39,6 +60,17 @@ ActiveRecord::Schema.define(version: 2024_05_19_110010) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_transactions", force: :cascade do |t|
+    t.bigint "group_id"
+    t.float "amount"
+    t.integer "paid_by"
+    t.integer "paid_to"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_user_transactions_on_group_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -51,6 +83,8 @@ ActiveRecord::Schema.define(version: 2024_05_19_110010) do
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
   end
 
+  add_foreign_key "expense_payers", "expenses"
+  add_foreign_key "expenses", "groups"
   add_foreign_key "group_users", "groups"
   add_foreign_key "group_users", "users"
 end
