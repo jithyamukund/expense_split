@@ -8,54 +8,51 @@ module Api
       before_action :set_group
 
       def index
-        expenses = @group.expenses
+        expenses = @group.expenses.includes(:expense_payers).page(params[:page]).per(10)
         render json: expenses, status: :ok
       end
 
       def create
-        service = ExpenseService.new(@group, expense_params, params[:payment_details])
+        service = ExpenseService.new(@group, expense_params)
         result = service.create_expense
-        if result[:error]
-          render json: { errors: result[:error] }, status: :unprocessable_entity
+        if result[:errors]
+          render json: { errors: result[:errors] }, status: :unprocessable_entity
         else
-          render json: { expense: ExpenseSerializer.new(result[:expense]) }, status: :created
+          render json: result[:expense], status: :created
         end
       end
 
       def update
         expense = @group.expenses.find_by(id: params[:id])
-        if expense
-          if expense.update(expense_params)
-            render json: expense, status: :ok
-          else
-            render json: expense.errors, status: :unprocessable_entity
-          end
+        render json: { error: 'Expense not found' }, status: :not_found unless expense
+
+        if expense.update(expense_params)
+          render json: expense, status: :ok
         else
-          render json: { error: 'Expense not found' }, status: :not_found
+          render json: expense.errors, status: :unprocessable_entity
         end
       end
 
       def destroy
         expense = @group.expenses.find_by(id: params[:id])
-        if expense
-          if expense.destroy
-            render json: expense, status: :ok
-          else
-            render json: expense.errors, status: :unprocessable_entity
-          end
+        render json: { error: 'Expense not found' }, status: :not_found unless expense
+
+        if expense.destroy
+          render json: expense, status: :ok
         else
-          render json: { error: 'Expense not found' }, status: :not_found
+          render json: expense.errors, status: :unprocessable_entity
         end
       end
 
       private
 
       def set_group
-        @group = Group.find(params[:group_id])
+        @group = Group.find_by(id: params[:group_id])
       end
 
       def expense_params
-        params.require(:expense).permit(:description, :total_amount, :split_type_id, :date, :group_id)
+        params.require(:expense).permit(:description, :total_amount, :split_type_id, :date, :group_id,
+                                        expense_payers_attributes: %i[amount paid_by date])
       end
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 # user_transaction.
-class UserTransaction < ApplicationRecord
+class Transaction < ApplicationRecord
   belongs_to :group
 end

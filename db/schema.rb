@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 2024_05_19_131443) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "user_transactions", force: :cascade do |t|
+  create_table "transactions", force: :cascade do |t|
     t.bigint "group_id"
     t.float "amount"
     t.integer "paid_by"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 2024_05_19_131443) do
     t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["group_id"], name: "index_user_transactions_on_group_id"
+    t.index ["group_id"], name: "index_transactions_on_group_id"
   end
 
   create_table "users", force: :cascade do |t|

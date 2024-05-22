@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :group do
-    name { 'NewGroup_1' }
-    description { 'Sample Description' }
+    name { Faker::Lorem.sentence }
+    description { Faker::Lorem.sentence }
   end
 end
