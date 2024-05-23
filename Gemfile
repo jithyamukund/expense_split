@@ -47,6 +47,7 @@ group :test do
   gem 'faker'
 end
 
+gem 'kaminari'
 gem 'rubocop-rails', require: false
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'shoulda-matchers', '~> 5.0'

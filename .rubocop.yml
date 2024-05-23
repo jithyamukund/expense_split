@@ -13,3 +13,6 @@ AllCops:
     - 'Gemfile'              # Exclude the 'Gemfile' file
     - 'Rakefile'             # Exclude the 'Rakefile' file
     - 'README.md'            # Exclude the 'README.md' file
+
+Metrics/MethodLength:
+  Max: 20
