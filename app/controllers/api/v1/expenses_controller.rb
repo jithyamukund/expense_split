@@ -6,9 +6,9 @@ module Api
     # Controller for managing expenses.
     class ExpensesController < ApplicationController
       before_action :set_group
-
+      PER_PAGE = 10
       def index
-        expenses = @group.expenses.includes(:expense_payers).page(params[:page]).per(10)
+        expenses = @group.expenses.includes(:expense_payers).page(params[:page]).per(PER_PAGE)
         render json: expenses, status: :ok
       end
 
@@ -19,28 +19,6 @@ module Api
           render json: { errors: result[:errors] }, status: :unprocessable_entity
         else
           render json: result[:expense], status: :created
-        end
-      end
-
-      def update
-        expense = @group.expenses.find_by(id: params[:id])
-        render json: { error: 'Expense not found' }, status: :not_found unless expense
-
-        if expense.update(expense_params)
-          render json: expense, status: :ok
-        else
-          render json: expense.errors, status: :unprocessable_entity
-        end
-      end
-
-      def destroy
-        expense = @group.expenses.find_by(id: params[:id])
-        render json: { error: 'Expense not found' }, status: :not_found unless expense
-
-        if expense.destroy
-          render json: expense, status: :ok
-        else
-          render json: expense.errors, status: :unprocessable_entity
         end
       end
 

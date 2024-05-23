@@ -31,6 +31,20 @@ RSpec.describe ExpenseService, type: :service do
         expect(result[:expense]).to be_nil
         expect(result[:errors]).to include("Description can't be blank")
       end
+
+      it 'validates presence of at least one expense payer' do
+        expense_params_without_payer = expense_params.merge(expense_payers_attributes: [])
+        service = ExpenseService.new(group, expense_params_without_payer)
+        result = service.create_expense
+        expect(result[:errors]).to include('must have at least one payer')
+      end
+
+      it 'validates the presence of a valid split type' do
+        expense_params_without_split_type_id = expense_params.merge(split_type_id: nil)
+        service = ExpenseService.new(group, expense_params_without_split_type_id)
+        result = service.create_expense
+        expect(result[:errors]).to include("Split type can't be blank")
+      end
     end
   end
 end
