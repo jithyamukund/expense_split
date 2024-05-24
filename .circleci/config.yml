@@ -11,13 +11,13 @@ jobs:
       RAILS_ENV: test
       POSTGRES_USER: postgres
       POSTGRES_DB: expense_split_api_test
-      POSTGRES_PASSWORD: "root"
+      POSTGRES_PASSWORD: root
       POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - checkout
       - ruby/install-deps
       - run:
-          name: Wait for DB
+          name: Wait for PostgreSQL to be ready
           command: |
             for i in `seq 1 10`; do
               nc -z localhost 5432 && echo "Postgres is up" && exit 0
