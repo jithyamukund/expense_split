@@ -4,6 +4,7 @@ orbs:
   ruby: circleci/ruby@2.0.1
 
 jobs:
+  run-rubocop:
   test-ruby:
     docker:
       - image: cimg/ruby:2.7.7
@@ -36,7 +37,18 @@ jobs:
           name: Run RSpec tests
           command: bundle exec rspec
 
+  rubocop:
+    docker:
+      - image: cimg/ruby:2.7.7
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Run Rubocop
+          command: bundle exec rubocop
+
 workflows:
   build-and-test:
     jobs:
+      - rubocop
       - test-ruby
