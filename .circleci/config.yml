@@ -1,0 +1,41 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@2.0.1
+
+jobs:
+  test-ruby:
+    docker:
+      - image: cimg/ruby:2.7.7-node
+      - image: circleci/postgres:9.5-alpine
+    environment:
+      RAILS_ENV: test
+      POSTGRES_USER: postgres
+      POSTGRES_DB: myapp_test
+      POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: trust
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Wait for DB
+          command: |
+            for i in `seq 1 10`; do
+              nc -z localhost 5432 && echo "Postgres is up" && exit 0
+              echo "Waiting for Postgres..."
+              sleep 1
+            done
+            echo "Failed to connect to Postgres" && exit 1
+      - run:
+          name: Database setup
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:schema:load
+            bundle exec rake db:test:prepare
+      - run:
+          name: Run RSpec tests
+          command: bundle exec rspec
+
+workflows:
+  build-and-test:
+    jobs:
+      - test-ruby
