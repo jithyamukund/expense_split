@@ -1,3 +1,4 @@
+
 version: 2.1
 orbs:
   ruby: circleci/ruby@2.0.1
@@ -5,19 +6,19 @@ orbs:
 jobs:
   test-ruby:
     docker:
-      - image: cimg/ruby:2.7.7-node
-      - image: circleci/postgres:9.5-alpine
+      - image: cimg/ruby:2.7.7
+      - image: cimg/postgres:13.3
     environment:
       RAILS_ENV: test
       POSTGRES_USER: postgres
-      POSTGRES_DB: myapp_test
-      POSTGRES_PASSWORD: ""
+      POSTGRES_DB: expense_split_api_test
+      POSTGRES_PASSWORD: root
       POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - checkout
       - ruby/install-deps
       - run:
-          name: Wait for DB
+          name: Wait for PostgreSQL to be ready
           command: |
             for i in `seq 1 10`; do
               nc -z localhost 5432 && echo "Postgres is up" && exit 0
