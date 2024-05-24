@@ -4,6 +4,7 @@ require: rubocop-rails
 
 # Exclude specific files or directories from RuboCop checks
 AllCops:
+  NewCops: enable
   Exclude:
     - 'vendor/**/*'          # Exclude files in the 'vendor' directory
     - 'config/**/*'          # Exclude files in the 'config' directory

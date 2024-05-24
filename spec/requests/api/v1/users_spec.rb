@@ -47,7 +47,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       it 'returns error messages in JSON format' do
         post :create, params: { user: invalid_params }, format: :json
         expect(response.media_type).to eq('application/json')
-        expect(JSON.parse(response.body)['email']).to include('is invalid')
+        expect(JSON.parse(response.body)['email']).to include('Is invalid')
       end
 
       it 'does not create a new user' do

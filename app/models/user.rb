@@ -12,28 +12,28 @@ class User < ApplicationRecord
             length: { minimum: 3, maximum: 25 },
             format: {
               with: /\A[a-zA-Z]+\z/,
-              message: 'only letters are allowed'
+              message: I18n.t('only_letters_are_allowed')
             }
   validates :last_name,
             presence: true,
             length: { minimum: 3, maximum: 25 },
             format: {
               with: /\A[a-zA-Z]+\z/,
-              message: 'only letters are allowed'
+              message: I18n.t('only_letters_are_allowed')
             }
   validates :phone_number,
-            uniqueness: { message: 'has already been taken' },
-            presence: { message: 'can not be blank' },
+            uniqueness: { message: I18n.t('has_already_been_taken') },
+            presence: { message: I18n.t('can_not_be_blank') },
             format: {
               with: /\A[0-9]{10}\z/,
-              message: 'must be a valid 10-digit number'
+              message: I18n.t('must_be_a_valid_10_digit_number')
             }
   validates :email,
-            uniqueness: { message: 'has already been taken' },
-            presence: { message: 'can not be blank' },
+            uniqueness: { message: I18n.t('has_already_been_taken') },
+            presence: { message: I18n.t('can_not_be_blank') },
             format: {
               with: URI::MailTo::EMAIL_REGEXP,
-              message: 'is invalid'
+              message: I18n.t('is_invalid')
             }
   validates :password,
             presence: true,

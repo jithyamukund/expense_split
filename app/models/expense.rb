@@ -6,7 +6,7 @@ class Expense < ApplicationRecord
   has_many :expense_payers, dependent: :destroy
   accepts_nested_attributes_for :expense_payers
 
-  validates :group_id, :description, :total_amount, :split_type_id, :date, presence: true
+  validates :description, :total_amount, :split_type_id, :date, presence: true
   validate :at_least_one_expense_payer
   validate :valid_split_type_id
 

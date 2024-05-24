@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  only_letters_are_allowed: 'Only letters are allowed'
+  has_already_been_taken: 'Has already been taken'
+  can_not_be_blank: 'Can not be blank'
+  must_be_a_valid_10_digit_number: 'Must be a valid 10-digit number'
+  is_invalid: 'Is invalid'

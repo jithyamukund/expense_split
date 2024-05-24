@@ -15,7 +15,6 @@ RSpec.describe Expense, type: :model do
     end
     let(:expense_2)  { build(:expense, date: '') }
 
-    it { should validate_presence_of(:group_id)}
     it { should validate_presence_of(:description)}
     it { should validate_presence_of(:total_amount)}
     it { should validate_presence_of(:split_type_id)}
