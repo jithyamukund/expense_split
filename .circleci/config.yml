@@ -51,4 +51,6 @@ workflows:
   build-and-test:
     jobs:
       - rubocop
-      - test-ruby
+      - test-ruby:
+          requires:
+            - rubocop
