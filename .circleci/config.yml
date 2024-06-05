@@ -1,10 +1,7 @@
 
 version: 2.1
-orbs:
-  ruby: circleci/ruby@2.0.1
 
 jobs:
-  run-rubocop:
   test-ruby:
     docker:
       - image: cimg/ruby:2.7.7
@@ -15,9 +12,16 @@ jobs:
       POSTGRES_DB: expense_split_api_test
       POSTGRES_PASSWORD: root
       POSTGRES_HOST_AUTH_METHOD: trust
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: root
+      DATABASE_HOST: localhost
     steps:
       - checkout
-      - ruby/install-deps
+      - run:
+          name: Install dependencies
+          command: |
+            gem install bundler -v 2.4.22
+            bundle install
       - run:
           name: Wait for PostgreSQL to be ready
           command: |
@@ -42,7 +46,11 @@ jobs:
       - image: cimg/ruby:2.7.7
     steps:
       - checkout
-      - ruby/install-deps
+      - run:
+          name: Install dependencies
+          command: |
+            gem install bundler -v 2.4.22
+            bundle install
       - run:
           name: Run Rubocop
           command: bundle exec rubocop
