@@ -50,5 +50,8 @@ end
 gem 'kaminari'
 gem 'rubocop-rails', require: false
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "stackprof"
+gem "sentry-ruby"
+gem "sentry-rails"
 gem 'shoulda-matchers', '~> 5.0'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
