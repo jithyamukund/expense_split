@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      RAILS_ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: expense_split_api_development
+    ports:
+      - "5433:5433"
+    volumes:
+      - db_data:/Library/PostgreSQL/15/data
+
+  web:
+    build: .
+    volumes:
+      - .:/docker/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_HOST: db
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: root
+      DATABASE_NAME: expense_split_api_development
+    command: ["entrypoint.sh", "bundle", "exec", "puma", "-C", "config/puma.rb"]
+
+volumes:
+  db_data:
