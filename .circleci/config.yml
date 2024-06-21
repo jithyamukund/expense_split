@@ -1,8 +1,8 @@
 
 version: 2.1
 
-jobs:
-  test-ruby:
+executors:
+  ruby-executor:
     docker:
       - image: cimg/ruby:2.7.7
       - image: cimg/postgres:13.3
@@ -15,6 +15,10 @@ jobs:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: root
       DATABASE_HOST: localhost
+
+jobs:
+  setup:
+    executor: ruby-executor
     steps:
       - checkout
       - run:
@@ -22,6 +26,11 @@ jobs:
           command: |
             gem install bundler -v 2.4.22
             bundle install
+
+  test-ruby:
+    executor: ruby-executor
+    steps:
+      - setup
       - run:
           name: Wait for PostgreSQL to be ready
           command: |
@@ -42,15 +51,9 @@ jobs:
           command: bundle exec rspec
 
   rubocop:
-    docker:
-      - image: cimg/ruby:2.7.7
+    executor: ruby-executor
     steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            gem install bundler -v 2.4.22
-            bundle install
+      - setup
       - run:
           name: Run Rubocop
           command: bundle exec rubocop
