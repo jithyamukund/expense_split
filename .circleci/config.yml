@@ -17,7 +17,7 @@ executors:
       DATABASE_HOST: localhost
 
 jobs:
-  setup:
+  test-ruby:
     executor: ruby-executor
     steps:
       - checkout
@@ -26,11 +26,6 @@ jobs:
           command: |
             gem install bundler -v 2.4.22
             bundle install
-
-  test-ruby:
-    executor: ruby-executor
-    steps:
-      - setup
       - run:
           name: Wait for PostgreSQL to be ready
           command: |
@@ -53,7 +48,12 @@ jobs:
   rubocop:
     executor: ruby-executor
     steps:
-      - setup
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            gem install bundler -v 2.4.22
+            bundle install
       - run:
           name: Run Rubocop
           command: bundle exec rubocop
